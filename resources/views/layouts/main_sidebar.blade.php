@@ -91,6 +91,7 @@
           </li>
 
         </ul>
+        <a href="{{ route('logout.perform') }}" class="btn btn-block btn-outline-warning"><i class="fas fa-sign-out-alt"></i> {{ __('sidebar.Logout') }}</a>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

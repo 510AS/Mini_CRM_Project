@@ -107,6 +107,7 @@
                             </tr>
                         </tfoot>
                     </table>
+                    {!! $companies->links() !!}
               </div>
                         </div>
                     </div>

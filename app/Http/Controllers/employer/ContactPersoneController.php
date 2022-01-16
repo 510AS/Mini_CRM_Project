@@ -5,7 +5,9 @@ namespace App\Http\Controllers\employer;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Contact_Persone;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class ContactPersoneController extends Controller
 {
@@ -42,6 +44,7 @@ class ContactPersoneController extends Controller
      */
     public function store(Request $request)
     {
+        try {
 
         $request->validate([
             'first_name_en'           => 'required',
@@ -49,8 +52,9 @@ class ContactPersoneController extends Controller
             'last_name_en'           => 'required',
             'last_name_ar'           => 'required',
             'email'                   => 'required',
-            'phone'                   => 'required',
+            'phone'                   => 'required|numeric',
             'company_id'               => 'required',
+            'linkedin_url'              => "requiredIf($request->has('linkedin_url'))",
         ]);
         if($request->has('linkedin_url')){
             $linkedin_url = $request->linkedin_url;
@@ -67,8 +71,15 @@ class ContactPersoneController extends Controller
         $contact_Persone->linkedin_url =$linkedin_url ;
         $contact_Persone->save();
 
+        $user = User::get();
+        $employer = Contact_Persone::latest()->first();
+        Notification::send($user, new \App\Notifications\AddEmployer($employer));
         return redirect()->route('employees.index')
                         ->with('success',trans('messages.success'));
+        }
+        catch (\Exception $e){
+             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            }
     }
 
     /**
@@ -106,6 +117,8 @@ class ContactPersoneController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        try {
         $contact_Persone = Contact_Persone::findorfail($id);
         $request->validate([
             'first_name_en'           => 'required',
@@ -113,8 +126,9 @@ class ContactPersoneController extends Controller
             'last_name_en'           => 'required',
             'last_name_ar'           => 'required',
             'email'                   => 'required',
-            'phone'                   => 'required',
+            'phone'                   => 'required|numeric',
             'company_id'                   => 'required',
+            'linkedin_url'                   => "requiredIf($request->has('linkedin_url'))",
         ]);
         if($request->has('linkedin_url')){
             $linkedin_url = $request->linkedin_url;
@@ -137,6 +151,10 @@ class ContactPersoneController extends Controller
 
         return redirect()->route('employees.index')
                         ->with('success',trans('messages.Update'));
+                        }
+        catch (\Exception $e){
+             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            }
     }
 
     /**

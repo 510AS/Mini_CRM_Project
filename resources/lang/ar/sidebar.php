@@ -7,5 +7,6 @@ return [
     'All contant'=>'كل الموظفين',
     'Add New'=>'اضافه جديد',
     'Companies'=>'الشركات',
+    'Logout'=>'تسجيل الخروج',
 
 ];

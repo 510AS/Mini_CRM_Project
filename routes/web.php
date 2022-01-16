@@ -43,6 +43,11 @@ Route::group(
             Route::resource('employees','ContactPersoneController');
         });
 
+                /**
+         * Logout Route
+         */
+        Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
+
     });
 
 

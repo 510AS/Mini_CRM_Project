@@ -4,7 +4,9 @@ namespace App\Http\Controllers\company;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
@@ -40,6 +42,8 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+
+        try {
         $request->validate([
             'name_en'           => 'required',
             'name_ar'           => 'required',
@@ -62,8 +66,16 @@ class CompanyController extends Controller
         $companies->logo = $logoImage;
         $companies->save();
 
+        $user = User::get();
+        $company = company::latest()->first();
+        Notification::send($user, new \App\Notifications\AddCompany($company));
+
         return redirect()->route('companies.index')
                         ->with('success',trans('messages.success'));
+                        }
+        catch (\Exception $e){
+             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            }
     }
 
     /**
@@ -99,6 +111,8 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        try {
         $companies = Company::findorfail($id);
         $request->validate([
             'name_en'           => 'required',
@@ -128,6 +142,10 @@ class CompanyController extends Controller
 
         return redirect()->route('companies.index')
                         ->with('success',trans('messages.Update'));
+                        }
+        catch (\Exception $e){
+             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            }
     }
 
     /**

@@ -7,5 +7,6 @@ return [
     'All contant'=>'All contant',
     'Add New'=>'Add New',
     'Companies'=>'Companies',
+    'Logout'=>'Logout',
 
 ];

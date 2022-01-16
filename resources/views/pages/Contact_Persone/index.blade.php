@@ -108,6 +108,7 @@
                             </tr>
                         </tfoot>
                     </table>
+                    {!! $contact_Persone->links() !!}
               </div>
                         </div>
                     </div>

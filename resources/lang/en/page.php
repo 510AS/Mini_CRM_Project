@@ -2,7 +2,7 @@
 
 return [
    'Add Companies'=>'Add Companies',
-   'All Companiess'=>'All Companies',
+   'All Companies'=>'All Companies',
    'Name EN'=>'Name EN',
    'Name Ar'=>'Name Ar',
    'Email address'=>'Email address',
